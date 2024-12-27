@@ -87,43 +87,74 @@
 // export default Counter
 
 
-// task 5
+// // task 5
+// import React,{useState} from "react";
+
+// const Data = () => {
+//   const[fname,setfname] = useState("")
+//   const[lname,setlname] = useState("")
+
+//  const[FinalFirstname,setFinalFirstname] = useState("")
+//  const[FinalLastname,setFinalLastname] = useState("")
+
+//  const SubmitHandler = (e) => {
+//   e.preventDefault();
+//   setFinalFirstname(fname);
+//   setFinalLastname(lname);
+
+//  }
+
+//   return (
+//     <>
+//     <form onSubmit={SubmitHandler}>
+
+//       <label>first Name :</label>
+//       <input type="fname" name="fname" value={fname} placeholder="enter first name" onChange={(e) =>setfname(e.target.value)}/>
+
+//       <label>last Name :</label>
+//       <input type="lname" name="lname" value={lname} placeholder="enter last name" onChange={(e) =>setlname(e.target.value)}/>
+
+//      <input type="submit"/>
+//     </form>
+
+//     <p>first Name:{FinalFirstname}</p>
+//     <p>last Name:{FinalLastname}</p>
+    
+//     </>
+//   )
+// }
+//   export default Data
+
+// //task6
 import React,{useState} from "react";
 
-const Data = () => {
-  const[fname,setfname] = useState("")
-  const[lname,setlname] = useState("")
+const Datas = () => {
+  const[Data,setData] = useState(0)
+  const[Result,setResult] = useState(0)
+  const incre = (e)=> {
+    e.preventDefault();
+    setResult(Result+parseInt(Data))
+    setData("")
+  }
 
- const[FinalFirstname,setFinalFirstname] = useState("")
- const[FinalLastname,setFinalLastname] = useState("")
-
- const SubmitHandler = (e) => {
-  e.preventDefault();
-  setFinalFirstname(fname);
-  setFinalLastname(lname);
-
- }
+  const decre = (e) => {
+    e.preventDefault();
+    setResult(Result-parseInt(Data))
+    setData("")
+  }
 
   return (
     <>
-    <form onSubmit={SubmitHandler}>
-
-      <label>first Name :</label>
-      <input type="fname" name="fname" value={fname} placeholder="enter first name" onChange={(e) =>setfname(e.target.value)}/>
-
-      <label>last Name :</label>
-      <input type="lname" name="lname" value={lname} placeholder="enter last name" onChange={(e) =>setlname(e.target.value)}/>
-
-     <input type="submit"/>
+    <h1>{Result}</h1>
+    <form>
+    <input type="number" value={Data} onChange={(e)=>setData(e.target.value)}/>
+    <br/>
+    <button onClick={incre}>+</button>
+    <button onClick={decre}>-</button>
     </form>
-
-    <p>first Name:{FinalFirstname}</p>
-    <p>last Name:{FinalLastname}</p>
-    
     </>
   )
 }
-  export default Data
 
-
+export default Datas
 
