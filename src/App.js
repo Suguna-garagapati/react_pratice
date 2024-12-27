@@ -88,5 +88,42 @@
 
 
 // task 5
+import React,{useState} from "react";
+
+const Data = () => {
+  const[fname,setfname] = useState("")
+  const[lname,setlname] = useState("")
+
+ const[FinalFirstname,setFinalFirstname] = useState("")
+ const[FinalLastname,setFinalLastname] = useState("")
+
+ const SubmitHandler = (e) => {
+  e.preventDefault();
+  setFinalFirstname(fname);
+  setFinalLastname(lname);
+
+ }
+
+  return (
+    <>
+    <form onSubmit={SubmitHandler}>
+
+      <label>first Name :</label>
+      <input type="fname" name="fname" value={fname} placeholder="enter first name" onChange={(e) =>setfname(e.target.value)}/>
+
+      <label>last Name :</label>
+      <input type="lname" name="lname" value={lname} placeholder="enter last name" onChange={(e) =>setlname(e.target.value)}/>
+
+     <input type="submit"/>
+    </form>
+
+    <p>first Name:{FinalFirstname}</p>
+    <p>last Name:{FinalLastname}</p>
+    
+    </>
+  )
+}
+  export default Data
+
 
 
