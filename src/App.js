@@ -125,36 +125,191 @@
 // }
 //   export default Data
 
-// //task6
-import React,{useState} from "react";
+// // //task6
+// import React,{useState} from "react";
 
-const Datas = () => {
-  const[Data,setData] = useState(0)
-  const[Result,setResult] = useState(0)
-  const incre = (e)=> {
+// const Datas = () => {
+//   const[Data,setData] = useState(0)
+//   const[Result,setResult] = useState(0)
+//   const incre = (e)=> {
+//     e.preventDefault();
+//     setResult(Result+parseInt(Data))
+//     setData("")
+//   }
+
+//   const decre = (e) => {
+//     e.preventDefault();
+//     setResult(Result-parseInt(Data))
+//     setData("")
+//   }
+
+//   return (
+//     <>
+//     <h1>{Result}</h1>
+//     <form>
+//     <input type="number" value={Data} onChange={(e)=>setData(e.target.value)}/>
+//     <br/>
+//     <button onClick={incre}>+</button>
+//     <button onClick={decre}>-</button>
+//     </form>
+//     </>
+//   )
+// }
+
+// export default Datas
+
+// //task7
+// import React,{useState} from "react";
+// const FromHandling = () => {
+//   const[Data,setData] = useState({
+//     'FirstName':"",
+//     "LastName":"",
+//     'Email':"",
+//     'password':"",
+//   })
+//     const[FinalResult,setFinalResult] = useState([])
+//     console.log(FinalResult,"final")
+//     const{FirstName,LastName,Email,Password} = Data
+
+//     const EventHandler =(e) => {
+//       setData({...Data,[e.target.name]:e.target.value})
+//   }
+   
+//   const SubmitHandler = (e) => {
+//     e.preventDefault();
+//     setFinalResult(Data)
+//   } 
+ 
+//   return (
+//     <>
+//     <form onSubmit={SubmitHandler}>
+//       <label>First name :</label>
+//       <input  type="text" name="FirstName" value={FirstName} onChange={EventHandler} />
+//       <label>Last Name :</label>
+//       <input type="text" name="LastName" value={LastName} onChange={EventHandler} />
+//       <label> Email :</label>
+//       <input type="email" name="Email" value={Email} onChange={EventHandler} />
+//       <label>Password :</label>
+//       <input type="password" name="Password" value={Password} onChange={EventHandler} />
+//       <input type="submit"/>
+//     </form>
+//     <h1>{FinalResult.FirstName}</h1>
+//     <h1>{FinalResult.LastName}</h1>
+//     <h1>{FinalResult.Email}</h1>
+//     <h1>{FinalResult.Password}</h1>
+
+//     </>
+//   )
+// }
+// export default FromHandling
+
+//task 8
+// import React, { useState } from 'react'
+
+// const Map = () => {
+//     const data = ['reactjs','nodejs','angular','vuejs']
+//   return (
+//     <>
+//     {
+//         obj.map((value)=><li>{value}</li>)
+//     }
+//     </>
+//   )
+// }
+
+// // export default Map
+
+import React, { useState } from 'react'
+
+const Task1 = () => {
+  const [dataInput, setdataInput] = useState("")
+  const [submittedData, setsubmittedData] = useState([])
+  const [buttonText, setButtonText] = useState("Submit");
+  const [editdata,seteditdata]=useState(null)
+  
+
+
+
+  const display = (e) => {
+
+
     e.preventDefault();
-    setResult(Result+parseInt(Data))
-    setData("")
+    if(editdata===null)
+    {
+
+    
+    //creating a new variable to add the current data input to existing input
+    const newdata = [...submittedData, dataInput]
+    localStorage.setItem("datainput", JSON.stringify(newdata))
+    setsubmittedData(newdata)
+    }
+    else{
+      
+        // If we're editing, update the existing item at the editIndex
+        const updatedData = [...submittedData];
+        updatedData[editdata] = dataInput;  // Update the value of the item at editIndex
+        setsubmittedData(updatedData);
+        localStorage.setItem("datainput", JSON.stringify(updatedData));
+    
+        // Reset for the next action
+        setButtonText("Submit");
+        seteditdata(null);  //
+      
+
+    }
+setdataInput("")
+
+
+    // const storeddata = JSON.parse(localStorage.getItem("dataInput")) || [];
+    // storeddata.push(dataInput);
+    // localStorage.setItem("key", JSON.stringify(storeddata));
+    //  setsubmittedData(storeddata)
+
+
+
   }
 
-  const decre = (e) => {
-    e.preventDefault();
-    setResult(Result-parseInt(Data))
-    setData("")
+  const del = (index) => {
+    // localStorage.removeItem('dataInput')
+    const newdata = submittedData.filter((data, i) => i !== index)//data refers to items in array,index = item array position
+    localStorage.setItem("dataInput", JSON.stringify(newdata))
+    setsubmittedData(newdata)
   }
+  const edit = (index) => {
+
+    setdataInput(submittedData[index])
+    setButtonText("update")
+    seteditdata(index)
+
+
+  }
+
+
 
   return (
     <>
-    <h1>{Result}</h1>
-    <form>
-    <input type="number" value={Data} onChange={(e)=>setData(e.target.value)}/>
-    <br/>
-    <button onClick={incre}>+</button>
-    <button onClick={decre}>-</button>
-    </form>
+      <form onSubmit={display} >
+        <label>enter a name</label>
+        <input type="text" placeholder='enter name' name="username" value={dataInput} onChange={(event) => setdataInput(event.target.value)} />
+        <button type='submit'>{buttonText}</button>
+      </form>
+      {/* Display the submitted data after form submission using conditional operator  */}
+
+      {
+        submittedData.map((values, index) =>
+        (
+          <div key={index}>
+            <h1>{values}
+
+              <button onClick={() => edit(index)}>edit</button>
+              <button onClick={() => del(index)}>delete</button>
+            </h1>
+          </div>
+        ))
+      }
     </>
   )
 }
 
-export default Datas
+export default Task1
 
