@@ -217,99 +217,129 @@
 //   )
 // }
 
-// // export default Map
+// // // // export default Map
 
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 
-const Task1 = () => {
-  const [dataInput, setdataInput] = useState("")
-  const [submittedData, setsubmittedData] = useState([])
-  const [buttonText, setButtonText] = useState("Submit");
-  const [editdata,seteditdata]=useState(null)
+// const Task1 = () => {
+//   const [dataInput, setdataInput] = useState("")
+//   const [submittedData, setsubmittedData] = useState([])
+//   const [buttonText, setButtonText] = useState("Submit");
+//   const [editdata,seteditdata]=useState(null)
   
 
 
 
-  const display = (e) => {
+//   const display = (e) => {
 
 
-    e.preventDefault();
-    if(editdata===null)
-    {
+//     e.preventDefault();
+//     if(editdata===null)
+//     {
 
     
-    //creating a new variable to add the current data input to existing input
-    const newdata = [...submittedData, dataInput]
-    localStorage.setItem("datainput", JSON.stringify(newdata))
-    setsubmittedData(newdata)
-    }
-    else{
+//     //creating a new variable to add the current data input to existing input
+//     const newdata = [...submittedData, dataInput]
+//     localStorage.setItem("datainput", JSON.stringify(newdata))
+//     setsubmittedData(newdata)
+//     }
+//     else{
       
-        // If we're editing, update the existing item at the editIndex
-        const updatedData = [...submittedData];
-        updatedData[editdata] = dataInput;  // Update the value of the item at editIndex
-        setsubmittedData(updatedData);
-        localStorage.setItem("datainput", JSON.stringify(updatedData));
+//         // If we're editing, update the existing item at the editIndex
+//         const updatedData = [...submittedData];
+//         updatedData[editdata] = dataInput;  // Update the value of the item at editIndex
+//         setsubmittedData(updatedData);
+//         localStorage.setItem("datainput", JSON.stringify(updatedData));
     
-        // Reset for the next action
-        setButtonText("Submit");
-        seteditdata(null);  //
+//         // Reset for the next action
+//         setButtonText("Submit");
+//         seteditdata(null);  //
       
 
-    }
-setdataInput("")
+//     }
+// setdataInput("")
 
 
-    // const storeddata = JSON.parse(localStorage.getItem("dataInput")) || [];
-    // storeddata.push(dataInput);
-    // localStorage.setItem("key", JSON.stringify(storeddata));
-    //  setsubmittedData(storeddata)
-
-
-
-  }
-
-  const del = (index) => {
-    // localStorage.removeItem('dataInput')
-    const newdata = submittedData.filter((data, i) => i !== index)//data refers to items in array,index = item array position
-    localStorage.setItem("dataInput", JSON.stringify(newdata))
-    setsubmittedData(newdata)
-  }
-  const edit = (index) => {
-
-    setdataInput(submittedData[index])
-    setButtonText("update")
-    seteditdata(index)
-
-
-  }
+//     // const storeddata = JSON.parse(localStorage.getItem("dataInput")) || [];
+//     // storeddata.push(dataInput);
+//     // localStorage.setItem("key", JSON.stringify(storeddata));
+//     //  setsubmittedData(storeddata)
 
 
 
+//   }
+
+//   const del = (index) => {
+//     // localStorage.removeItem('dataInput')
+//     const newdata = submittedData.filter((data, i) => i !== index)//data refers to items in array,index = item array position
+//     localStorage.setItem("dataInput", JSON.stringify(newdata))
+//     setsubmittedData(newdata)
+//   }
+//   const edit = (index) => {
+
+//     setdataInput(submittedData[index])
+//     setButtonText("update")
+//     seteditdata(index)
+
+
+//   }
+
+
+
+//   return (
+//     <>
+//       <form onSubmit={display} >
+//         <label>enter a name</label>
+//         <input type="text" placeholder='enter name' name="username" value={dataInput} onChange={(event) => setdataInput(event.target.value)} />
+//         <button type='submit'>{buttonText}</button>
+//       </form>
+//       {/* Display the submitted data after form submission using conditional operator  */}
+
+//       {
+//         submittedData.map((values, index) =>
+//         (
+//           <div key={index}>
+//             <h1>{values}
+
+//               <button onClick={() => edit(index)}>edit</button>
+//               <button onClick={() => del(index)}>delete</button>
+//             </h1>
+//           </div>
+//         ))
+//       }
+//     </>
+//   )
+// }
+
+// export default Task1
+
+
+
+
+//React Router 
+import React from 'react'
+import { BrowserRouter , Route , Routes } from 'react-router-dom'
+import Layout from './ReactRouter/Layout'
+import Home from './ReactRouter/Home'
+import Contact from './ReactRouter/Contact'
+import Blog from './ReactRouter/Blog'
+import NoPage from './ReactRouter/NoPage';
+const App = () => {
   return (
     <>
-      <form onSubmit={display} >
-        <label>enter a name</label>
-        <input type="text" placeholder='enter name' name="username" value={dataInput} onChange={(event) => setdataInput(event.target.value)} />
-        <button type='submit'>{buttonText}</button>
-      </form>
-      {/* Display the submitted data after form submission using conditional operator  */}
-
-      {
-        submittedData.map((values, index) =>
-        (
-          <div key={index}>
-            <h1>{values}
-
-              <button onClick={() => edit(index)}>edit</button>
-              <button onClick={() => del(index)}>delete</button>
-            </h1>
-          </div>
-        ))
-      }
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout/>} >
+      <Route index element={<Home/>} />
+      <Route path="blog" element={<Blog/>} />
+      <Route path="contact" element={<Contact/>} />
+      <Route path="*" element={<NoPage/>} />
+      </Route>
+    </Routes>
+    </BrowserRouter>
+    
     </>
   )
-}
+};
 
-export default Task1
-
+export default App
