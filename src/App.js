@@ -158,7 +158,7 @@
 
 // export default Datas
 
-// //task7
+//task7
 // import React,{useState} from "react";
 // const FromHandling = () => {
 //   const[Data,setData] = useState({
@@ -167,22 +167,19 @@
 //     'Email':"",
 //     'password':"",
 //   })
-//     const[FinalResult,setFinalResult] = useState([])
-//     console.log(FinalResult,"final")
+//     // const[FinalResult,setFinalResult] = useState([])
+//     // console.log(FinalResult,"final")
 //     const{FirstName,LastName,Email,Password} = Data
 
 //     const EventHandler =(e) => {
 //       setData({...Data,[e.target.name]:e.target.value})
 //   }
    
-//   const SubmitHandler = (e) => {
-//     e.preventDefault();
-//     setFinalResult(Data)
-//   } 
+  
  
 //   return (
 //     <>
-//     <form onSubmit={SubmitHandler}>
+//     <form>
 //       <label>First name :</label>
 //       <input  type="text" name="FirstName" value={FirstName} onChange={EventHandler} />
 //       <label>Last Name :</label>
@@ -193,10 +190,7 @@
 //       <input type="password" name="Password" value={Password} onChange={EventHandler} />
 //       <input type="submit"/>
 //     </form>
-//     <h1>{FinalResult.FirstName}</h1>
-//     <h1>{FinalResult.LastName}</h1>
-//     <h1>{FinalResult.Email}</h1>
-//     <h1>{FinalResult.Password}</h1>
+  
 
 //     </>
 //   )
@@ -316,30 +310,93 @@
 
 
 
-//React Router 
-import React from 'react'
-import { BrowserRouter , Route , Routes } from 'react-router-dom'
-import Layout from './ReactRouter/Layout'
-import Home from './ReactRouter/Home'
-import Contact from './ReactRouter/Contact'
-import Blog from './ReactRouter/Blog'
-import NoPage from './ReactRouter/NoPage';
-const App = () => {
+// //React Router 
+// import React from 'react'
+// import { BrowserRouter , Route , Routes } from 'react-router-dom'
+// import Layout from './ReactRouter/Layout'
+// import Home from './ReactRouter/Home'
+// import Contact from './ReactRouter/Contact'
+// import Blog from './ReactRouter/Blog'
+// import NoPage from './ReactRouter/NoPage';
+// const App = () => {
+//   return (
+//     <>
+//     <BrowserRouter>
+//     <Routes>
+//       <Route path="/" element={<Layout/>} >
+//       <Route index element={<Home/>} />
+//       <Route path="blog" element={<Blog/>} />
+//       <Route path="contact" element={<Contact/>} />
+//       <Route path="*" element={<NoPage/>} />
+//       </Route>
+//     </Routes>
+//     </BrowserRouter>
+    
+//     </>
+//   )
+// };
+
+// export default App
+
+
+
+
+// import React from 'react'
+// import { BrowserRouter , Route , Routes } from "react-router-dom";
+// import Register from './register_login/Register';
+// import Login from './register_login/Login';
+// import Page from './register_login/Page';
+
+// const App = () => {
+//   return (
+//    <>
+//    <BrowserRouter>
+//    <Routes>
+//    <Route  path='/' element={<Page/>} />
+//    <Route path="Login" element={<Login/>} />
+//    <Route path='Register' element={<Register/>} />
+    
+//    </Routes>
+//    </BrowserRouter>
+   
+//    </>
+//   )
+// }
+
+// export default App
+
+
+
+import React,{useState,useEffect} from "react";
+ const App = () => {
+  const[data,setData] = useState({
+    'fname' : " ",
+    'email' : " ",
+ })
+  const{fname,email}=data
+  const ChangeHandler = (e) => {
+    setData({...data , [e.target.name]:e.target.value})
+  }
+  const SubmitHandler = (e) => {
+    e.preventDefault();
+    const storedData = JSON.parse(localStorage.getItem("data")) || [];
+    storedData.push(data)
+    localStorage.setItem("data",JSON.stringify(storedData))
+    setData({fname : "", email : ""})
+
+  };
   return (
     <>
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Layout/>} >
-      <Route index element={<Home/>} />
-      <Route path="blog" element={<Blog/>} />
-      <Route path="contact" element={<Contact/>} />
-      <Route path="*" element={<NoPage/>} />
-      </Route>
-    </Routes>
-    </BrowserRouter>
-    
+    <form onSubmit={SubmitHandler}>
+      <label>name :</label>
+      <input type="text" name="fname" placeholder="enter name"  value={fname} onChange={ChangeHandler} />
+      <label>email :</label>
+      <input type="email" name="email" placeholder="enter email" value={email} onChange={ChangeHandler} />
+      <input type="submit"/>
+    </form>
     </>
   )
-};
+ }
+ export default App
 
-export default App
+
