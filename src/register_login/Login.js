@@ -1,77 +1,73 @@
-// import React from 'react'
+import React,{useState} from "react"
 
-// const login = () => {
-//   return (
-//     <>
-//     <form>
-
-        
-//       <label> Email :</label>
-//       <input type="email" name="Email"  />
-//       <br/>
-
-//       <label>Password :</label>
-//       <input type="password" name="Password" />
-//       <br/>
-
-//       <label>panel :</label>
-//       <select required >
-//         <option value=""> </option>
-//           <option value="admin">Admin</option>
-//           <option value="user">User</option>
-//      </select>
-//      <br/>
-
-//       <button>Login</button>
-
-//     </form>
-//     </>
-//   )
-// }
-
-// export default login
-
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "", panel: "user" });
+  const [loginData,setLoginData] = useState({
+    "email":"",
+    'password':"",
+    'panel':"",
+  })
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {email,password,panel} = loginData;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const changeHandler = (e) => {
+    setLoginData({...loginData,[e.target.name]:e.target.value})
+  }
 
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (u) => u.email === formData.email && u.password === formData.password && u.panel === formData.panel
+    const storedData = JSON.parse(localStorage.getItem("data")) || [];
+
+    // Check if the entered credentials exist in localStorage
+    const user = storedData.find(
+      (user) =>
+        user.email === email && user.password === password && user.panel === panel
     );
-
+  
     if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      navigate("/dashboard");
-    } else {
-      alert("Invalid credentials");
+      setError(""); // Clear any previous errors
+  
+      // Redirect to the common dashboard
+      navigate("/DashBoard", { state: { firstname: user.firstname, panel: user.panel } });
+      } else {
+      setError("Invalid email, password, or panel selection.");
     }
-  };
-
+    // storedData.push(loginData);
+    // localStorage.setItem("data",JSON.stringify(storedData));
+    setLoginData({
+      email:"",
+      password:"",
+      panel:""
+    })
+  }
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
-      <br />
-      <input name="password" placeholder="Password" type="password" onChange={handleChange} required />
-      <br />
-      <select name="panel" onChange={handleChange}>
-        <option value="user">User</option>
-        <option value="admin">Admin</option>
-      </select>
-      <br />
-      <button type="submit">Login</button>
-    </form>
-  );
-};
+    <>
+    <form onSubmit={submitHandler}>
+    <label>email</label>
+    <input type="email" name="email" value={email} onChange={changeHandler}/>
 
-export default Login;
+    <label>password</label>
+    <input type="password" name="password" value={password} onChange={changeHandler}/>
+
+    <label>Panel:</label>
+    <select name="panel" value={panel} onChange={changeHandler}>
+      <option value="" disabled>
+     Select Panel
+      </option>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+    </select>
+
+    
+    <button type="submit">Login</button>
+    </form>
+  
+    {error && <p style={{ color: "red" }}>{error}</p>}
+
+    </>
+  )
+}
+
+export default Login

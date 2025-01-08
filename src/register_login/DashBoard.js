@@ -1,13 +1,18 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-const DashBoard = () => {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+const Dashboard = () => {
+  const location = useLocation();
+  const { firstname, panel } = location.state || {};
 
   return (
-    <>
-      <h1>Welcome, {user?.firstName || "Guest"}!</h1>
-    </>
+    <div>
+      <h1>Welcome to the Dashboard</h1>
+      {firstname && <h2>Hello, {firstname}!</h2>}
+      {panel === "admin" && <p>You are logged in as <strong>Admin</strong>.</p>}
+      {panel === "user" && <p>You are logged in as <strong>User</strong>.</p>}
+    </div>
   );
 };
 
-export default DashBoard;
+export default Dashboard;

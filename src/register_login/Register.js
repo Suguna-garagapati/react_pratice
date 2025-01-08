@@ -1,141 +1,86 @@
-// import React,{useState} from 'react'
+import React, { useState } from "react";
 
-// const Register = () => {
-//   const [Panel,setPanel] = useState("");
+const Register = () => {
+    const [data, setData] = useState({
+        'firstname': "",
+        'lastname': "",
+        'email': "",
+        'password':"",
+        'confirmpassword':"",
+        'panel':"",
+    });
 
-//   const handleChange = (e) => {
-//     setPanel(e.target.value);
-//   };
-//     const[Data,setData] = useState({
-//             'FirstName':"",
-//             "LastName":"",
-//             'Email':"",
-//             'password':"",
-//             'Panel':"",
-//           })
-// const{FirstName,LastName,Email,Password,Panel} = Data
+    const { firstname, lastname, email,password,confirmpassword,panel } = data;
 
-//   const handleInputChange = (e) => {
-//        const { name, value } = e.target;
-//         setData({ ...Data, [name]: value });
-//        };
-  
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const randomId = Math.random().toString(36).substring(2, 9);
+    const changeHandler = (e) => {
+        setData({
+            ...data,[e.target.name]: e.target.value,
+        });
+    };
 
-//     // Create a new data object with the random ID
-//     const newEntry = { id: randomId, ...Data };
+    const display = (e) => {
+        e.preventDefault();
+    
+        if (!firstname || !lastname || !email || !password || !confirmpassword || !panel) {
+            alert("All fields are required.");
+            return;
+        }
+    
+        if (data.password !== data.confirmpassword) {
+            alert("You entered incorrect password");
+            return;
+        }
+    
+        try {
+            const id = Math.floor(Math.random() * 1000000);
+            const newData = { id, ...data };
+            const previousData = JSON.parse(localStorage.getItem("data")) || [];
+            previousData.push(newData);
+            console.log(previousData);
+            localStorage.setItem("data", JSON.stringify(previousData));
+            alert("Registration Successful");
+        } catch (error) {
+            console.error("Error accessing localStorage:", error);
+            alert("An error occurred while saving your data.");
+        }
+    
+        setData({
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            confirmpassword: "",
+            panel: "", // Reset panel to default empty
+        });
+    };
+    
 
-//     // Update the state and local storage
-//     const updatedData = [...Data, newEntry];
-//     setData(updatedData);
+    return (
+        <>
+            <form onSubmit={display}>
+                <label>Firstname:</label>
+                <input type="text" name="firstname" value={firstname} onChange={changeHandler} /><br />
+                <label>Lastname:</label>
+                <input type="text" name="lastname"value={lastname} onChange={changeHandler}/><br />
+                <label>Email:</label>
+                <input type="email" name="email"value={email} onChange={changeHandler}/><br />
+                <label>password:</label>
+                <input type="password" name="password" value={password} onChange={changeHandler}/><br />
+                <label>Confirm password:</label>
+                <input type="password" name="confirmpassword" value={confirmpassword} onChange={changeHandler}/><br />
+                <label>Panel:</label>
+                <select name="panel" value={panel} onChange={changeHandler}>
+                    <option value="" disabled>
+                        Select Panel
+                    </option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
 
-//     localStorage.setItem("Data", JSON.stringify(updatedData));
+                <button type="submit">Register now</button>
+            </form>
+        </>
+    );
+};
 
-//     // Clear the form
-//     setData({ FirstName : "", LastName : "" , Email : "", password : "" ,Panel : ""});
-//   };
-   
-
-
-
-
-//   return (
-//     <>
-//     <form onSubmit={handleSubmit}>
-
-//       <label>First name :</label>
-//       <input  type="text" name="FirstName" value={FirstName}  onChange={handleInputChange} required  />
-//       <br/>
-
-//       <label>Last Name :</label>
-//       <input type="text" name="LastName" value={LastName}   onChange={handleInputChange} required />
-//       <br/>
-
-//       <label> Email :</label>
-//       <input type="email" name="Email"   value={Email} onChange={handleInputChange} required />
-//       <br/>
-
-//       <label>Password :</label>
-//       <input type="password" name="Password"  value={Password}  onChange={handleInputChange} required  />
-//       <br/>
-
-//       <label>Confirm Password :</label>
-//       <input type='password' name='password' />
-//       <br/>
-
-//       <label htmlFor="dropdown" >panel :</label>
-//       <select id="dropdown" value={Panel} onChange={handleChange}  >
-// <option value="" disabled/>
-//        <option value="admin">Admin</option>
-//        <option value="user">User</option>
-//                 </select>
-//         <br/>
-
-//       <button type='submit'>Submit</button>
-//      </form>
-//      </>
-//   )
-// }
-
-// export default Register
-
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const Register = () => {
-//   const [formData, setFormData] = useState({
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     password: "",
-//     confirmPassword: "",
-//     panel: "user",
-//   });
-//   const navigate = useNavigate();
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     if (formData.password !== formData.confirmPassword) {
-//       alert("Passwords do not match");
-//       return;
-//     }
-
-//     const id = Math.random().toString(36).substr(2, 9);
-//     const userData = { ...formData, id };
-//     const users = JSON.parse(localStorage.getItem("users")) || [];
-//     users.push(userData);
-//     localStorage.setItem("users", JSON.stringify(users));
-//     navigate("/login");
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input name="firstName" placeholder="First Name" onChange={handleChange} required />
-//       <br />
-//       <input name="lastName" placeholder="Last Name" onChange={handleChange} required />
-//       <br />
-//       <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
-//       <br />
-//       <input name="password" placeholder="Password" type="password" onChange={handleChange} required />
-//       <br />
-//       <input name="confirmPassword" placeholder="Confirm Password" type="password" onChange={handleChange} required />
-//       <br />
-//       <select name="panel" onChange={handleChange}>
-//         <option value="user">User</option>
-//         <option value="admin">Admin</option>
-//       </select>
-//       <br />
-//       <button type="submit">Submit</button>
-//     </form>
-//   );
-// };
-
-// export default Register;
-
+export default Register;

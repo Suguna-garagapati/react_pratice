@@ -1,42 +1,24 @@
-// import React from 'react'
-// import {Outlet, useNavigate } from 'react-router-dom'
-
-// const Page = () => {
-//      const navigate = useNavigate();
-
-// const goToLogin = () => navigate("/Login");
-// const goToRegister = () => navigate("/Register");
-// return (
-//     <>
-//       <button onClick={goToLogin }>Login</button>
-//       <button onClick={goToRegister}>Register</button>
-//       <Outlet/>
-//     </>
-
-    
-//   )
-
-// }
-
-// export default Page
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
 const Page = () => {
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
+
+  const goToRegister = () => Navigate("register");
+  const goToLogin = () => Navigate("login");
 
   return (
     <>
-      <h1>Welcome</h1>
-      <button onClick={() => navigate("/login")}>Login</button>
-      <button onClick={() => navigate("/register")}>Register</button>
+      <h1>Welcome to the Panel</h1>
+      <button onClick={goToRegister}>Go to Register</button>
+      <button onClick={goToLogin}>Go to Login</button>
+      {/* This renders nested routes */}
+      <Outlet />
     </>
   );
 };
 
 export default Page;
-
-
 
 
 
